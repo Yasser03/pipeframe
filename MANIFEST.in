@@ -1,0 +1,16 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+include CONTRIBUTING.md
+include requirements.txt
+include requirements-dev.txt
+include pyproject.toml
+recursive-include pipeframe *.py
+recursive-include pipeframe py.typed
+recursive-include examples *.ipynb *.py *.csv
+recursive-include docs *.md *.rst
+include tests/*.py
+prune tests/__pycache__
+prune pipeframe/__pycache__
+global-exclude *.pyc
+global-exclude __pycache__
