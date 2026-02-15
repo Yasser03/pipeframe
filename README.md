@@ -21,6 +21,8 @@ result = (df
 )
 ```
 
+> **💡 How to read `>>`:** Read the `>>` operator as **"pipe to"** or **"then"**. For example, the code above reads as: *"Take df, **then** filter for age > 21, **then** group by city, **then** summarize..."*
+
 ---
 
 ## 🌟 Why PipeFrame?
