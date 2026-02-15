@@ -384,7 +384,7 @@ PipeFrame adds minimal overhead while dramatically improving code readability:
 ## 🎓 Learning Resources
 
 - **[Tutorial Notebook](examples/tutorial.ipynb)** - Complete walkthrough
-- **[API Reference](docs/api.md)** - Detailed documentation
+- **[API Reference](docs/API.md)** - Detailed documentation
 - **[Examples](examples/)** - Real-world use cases
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute
 
