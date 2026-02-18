@@ -5,6 +5,19 @@ All notable changes to PipeFrame will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2024-02-18
+
+### Added
+- **Pedagogical Utilities**
+  - Updated `peek()` to support custom message strings (e.g., `peek("Checking results")`)
+  - Added `Snapshot` and `profile_pipeline` to top-level `pipeframe` namespace exports
+
+### Fixed
+- Fixed missing exports in `pipeframe/__init__.py` ensuring `peek`, `Snapshot`, and `profile_pipeline` are available via `from pipeframe import *`.
+- Standardized variable names in Chapter 4 documentation and tutorial notebooks to prevent `KeyError` in piped expressions.
+
+---
+
 ## [0.2.0] - 2024-02-14
 
 ### 🎉 Initial Public Release

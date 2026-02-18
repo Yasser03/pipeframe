@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pipeframe"
-version = "0.2.0"
+version = "0.2.1"
 description = "Pipe your data naturally - intuitive data manipulation with readable syntax"
 readme = "README.md"
 license = {text = "MIT"}

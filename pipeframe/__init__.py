@@ -26,7 +26,7 @@ Core verbs:
     distinct()  : Get unique rows
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __author__ = "PipeFrame Team"
 __email__ = "team@pipeframe.dev"
 __license__ = "MIT"
