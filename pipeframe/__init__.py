@@ -57,7 +57,15 @@ from .verbs.manipulate import (
     slice_rows,
     starts_with,
     summarize,
+    tail,
     ungroup,
+)
+
+# Utility operations
+from .utils.helpers import (
+    Snapshot,
+    peek,
+    profile_pipeline,
 )
 
 # GroupBy
@@ -160,4 +168,8 @@ __all__ = [
     "to_excel",
     "to_json",
     "to_parquet",
+    # Utilities
+    "peek",
+    "Snapshot",
+    "profile_pipeline",
 ]

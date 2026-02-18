@@ -301,7 +301,7 @@ def check_data_quality(df: DataFrame, checks: Optional[Dict[str, Callable]] = No
 # ============================================================================
 
 
-def _peek_impl(df: DataFrame, n: int = 5, where: str = 'head') -> DataFrame:
+def _peek_impl(df: DataFrame, n: int = 5, where: str = 'head', message: Optional[str] = None) -> DataFrame:
     """
     Quick peek at data (useful in pipes for debugging).
     
@@ -330,6 +330,8 @@ def _peek_impl(df: DataFrame, n: int = 5, where: str = 'head') -> DataFrame:
     data = df._data if isinstance(df, DataFrame) else df
     
     print(f"\n{'='*60}")
+    if message:
+        print(message)
     print(f"Peek ({where}, n={n}): {len(data)} rows × {len(data.columns)} cols")
     print(f"{'='*60}")
     
@@ -345,14 +347,16 @@ def _peek_impl(df: DataFrame, n: int = 5, where: str = 'head') -> DataFrame:
     return df
 
 
-def peek(n: int = 5, where: str = 'head') -> Callable:
+def peek(arg: Any = 5, n: int = 5, where: str = 'head') -> Callable:
     """
     Quick peek at data - curry-friendly wrapper for pipe operator.
     
     Parameters
     ----------
+    arg : Any, optional
+        Either the message string to display or the number of rows (n)
     n : int, default 5
-        Number of rows to show
+        Number of rows to show (if arg is used for message)
     where : {'head', 'tail', 'sample'}, default 'head'
         Which rows to show
     
@@ -363,9 +367,16 @@ def peek(n: int = 5, where: str = 'head') -> Callable:
     
     Examples
     --------
+    >>> result = df >> peek("Checking progress") >> define(x='y * 2')
     >>> result = df >> peek(3) >> define(x='y * 2')
     """
-    return lambda df: _peek_impl(df, n, where)
+    message = None
+    if isinstance(arg, str):
+        message = arg
+    elif isinstance(arg, int):
+        n = arg
+        
+    return lambda df: _peek_impl(df, n, where, message)
 
 
 def describe_pipeline(df: DataFrame, *operations: Callable) -> None:
