@@ -152,17 +152,19 @@ def pivot_wider(
 ) -> Callable:
     """
     Pivot data from long to wide format - curry-friendly wrapper for pipe operator.
-    
+
     Returns
     -------
     Callable
         Function that takes a DataFrame and applies pivot_wider
-    
+
     Examples
     --------
     >>> df >> pivot_wider(id_cols='id', names_from='measure', values_from='value')
     """
-    return lambda df: _pivot_wider_impl(df, id_cols, names_from, values_from, values_fill, names_sep, names_prefix)
+    return lambda df: _pivot_wider_impl(
+        df, id_cols, names_from, values_from, values_fill, names_sep, names_prefix
+    )
 
 
 def _pivot_longer_impl(
@@ -251,13 +253,19 @@ def _pivot_longer_impl(
 
     # Remove prefix from column names if specified
     if names_prefix:
-        col_rename = {col: col.replace(names_prefix, "", 1) for col in cols if col.startswith(names_prefix)}
+        col_rename = {
+            col: col.replace(names_prefix, "", 1) for col in cols if col.startswith(names_prefix)
+        }
         data = data.rename(columns=col_rename)
         cols = [col_rename.get(col, col) for col in cols]
 
     # Perform melt
     result = pd.melt(
-        data, id_vars=id_vars if id_vars else None, value_vars=cols, var_name=names_to, value_name=values_to
+        data,
+        id_vars=id_vars if id_vars else None,
+        value_vars=cols,
+        var_name=names_to,
+        value_name=values_to,
     )
 
     # Drop NA values if requested
@@ -279,17 +287,27 @@ def pivot_longer(
 ) -> Callable:
     """
     Pivot data from wide to long format - curry-friendly wrapper for pipe operator.
-    
+
     Returns
     -------
     Callable
         Function that takes a DataFrame and applies pivot_longer
-    
+
     Examples
     --------
     >>> df >> pivot_longer(cols=['Q1', 'Q2'], names_to='quarter', values_to='sales')
     """
-    return lambda df: _pivot_longer_impl(df, cols, cols_vary, names_to, values_to, names_prefix, names_sep, names_pattern, values_drop_na)
+    return lambda df: _pivot_longer_impl(
+        df,
+        cols,
+        cols_vary,
+        names_to,
+        values_to,
+        names_prefix,
+        names_sep,
+        names_pattern,
+        values_drop_na,
+    )
 
 
 def pivot(
@@ -488,17 +506,19 @@ def melt(
 ) -> Callable:
     """
     Unpivot DataFrame from wide to long format - curry-friendly wrapper for pipe operator.
-    
+
     Returns
     -------
     Callable
         Function that takes a DataFrame and applies melt
-    
+
     Examples
     --------
     >>> df >> melt(id_vars='id', var_name='letter', value_name='number')
     """
-    return lambda df: _melt_impl(df, id_vars, value_vars, var_name, value_name, col_level, ignore_index)
+    return lambda df: _melt_impl(
+        df, id_vars, value_vars, var_name, value_name, col_level, ignore_index
+    )
 
 
 # Alias for tidyr compatibility
@@ -578,7 +598,7 @@ def unstack(
     return DataFrame(result.reset_index())
 
 
-# Alias for tidyr compatibility  
+# Alias for tidyr compatibility
 spread = pivot_wider
 
 
@@ -712,12 +732,12 @@ def separate(
 ) -> Callable:
     """
     Separate one column into multiple columns - curry-friendly wrapper for pipe operator.
-    
+
     Returns
     -------
     Callable
         Function that takes a DataFrame and applies separate
-    
+
     Examples
     --------
     >>> df >> separate('full_name', into=['first', 'last'], sep=' ')
@@ -790,9 +810,7 @@ def _unite_impl(
     # Unite columns
     if na_rm:
         # Remove NA values before uniting
-        result[col] = result[columns].apply(
-            lambda row: sep.join(row.dropna().astype(str)), axis=1
-        )
+        result[col] = result[columns].apply(lambda row: sep.join(row.dropna().astype(str)), axis=1)
     else:
         # Include NA values (as string "nan")
         result[col] = result[columns].astype(str).apply(lambda row: sep.join(row), axis=1)
@@ -813,12 +831,12 @@ def unite(
 ) -> Callable:
     """
     Unite multiple columns into one - curry-friendly wrapper for pipe operator.
-    
+
     Returns
     -------
     Callable
         Function that takes a DataFrame and applies unite
-    
+
     Examples
     --------
     >>> df >> unite('date', ['year', 'month', 'day'], sep='-')

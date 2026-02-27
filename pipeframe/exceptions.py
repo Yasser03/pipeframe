@@ -17,7 +17,9 @@ class PipeFrameError(Exception):
 class PipeFrameTypeError(PipeFrameError, TypeError):
     """Raised when an operation receives an argument of inappropriate type."""
 
-    def __init__(self, message: str, expected_type: Optional[type] = None, got_type: Optional[type] = None):
+    def __init__(
+        self, message: str, expected_type: Optional[type] = None, got_type: Optional[type] = None
+    ):
         if expected_type and got_type:
             message = f"{message} Expected {expected_type.__name__}, got {got_type.__name__}"
         super().__init__(message)

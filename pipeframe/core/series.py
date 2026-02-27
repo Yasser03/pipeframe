@@ -80,6 +80,10 @@ class Series:
         """String representation for printing."""
         return self._data.__str__()
 
+    def __iter__(self):
+        """Iterate over values in the Series."""
+        return iter(self._data)
+
     # Arithmetic operations
     def __add__(self, other: Any) -> "Series":
         """Addition."""
@@ -107,7 +111,7 @@ class Series:
 
     def __pow__(self, other: Any) -> "Series":
         """Power."""
-        return Series(self._data ** other)
+        return Series(self._data**other)
 
     # Comparison operations
     def __eq__(self, other: Any) -> "Series":  # type: ignore
@@ -197,18 +201,19 @@ class Series:
     def to_frame(self, name: Optional[str] = None) -> "DataFrame":
         """
         Convert Series to DataFrame.
-        
+
         Parameters
         ----------
         name : str, optional
             Name to use for the column. If None, uses the current series name.
-        
+
         Returns
         -------
         DataFrame
             DataFrame representation of the Series
         """
         from .dataframe import DataFrame
+
         return DataFrame(self._data.to_frame(name))
 
     def copy(self, deep: bool = True) -> "Series":
@@ -276,7 +281,11 @@ class Series:
         return self._data.unique()
 
     def value_counts(
-        self, normalize: bool = False, sort: bool = True, ascending: bool = False, dropna: bool = True
+        self,
+        normalize: bool = False,
+        sort: bool = True,
+        ascending: bool = False,
+        dropna: bool = True,
     ) -> "Series":
         """Return value counts."""
         return Series(

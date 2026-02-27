@@ -107,10 +107,7 @@ class DataFrame:
                 f"Pipe operator '>>' requires callable, got {type(other).__name__}"
             )
 
-        try:
-            result = other(self)
-        except Exception as e:
-            raise RuntimeError(f"Pipe operation failed: {str(e)}") from e
+        result = other(self)
 
         # Ensure we return a DataFrame or GroupBy if possible, but allow other
         # types for terminal verbs (like shape, count, etc.)
@@ -118,9 +115,9 @@ class DataFrame:
             return result
         elif isinstance(result, pd.DataFrame):
             return DataFrame(result)
-        elif type(result).__name__ == 'GroupBy':
+        elif type(result).__name__ == "GroupBy":
             return result
-        
+
         # Fallback for terminal verbs or other types
         return result
 
@@ -150,9 +147,7 @@ class DataFrame:
         elif isinstance(key, list):
             invalid = [col for col in key if col not in self._data.columns]
             if invalid:
-                raise PipeFrameColumnError(
-                    f"Columns {invalid}", list(self._data.columns)
-                )
+                raise PipeFrameColumnError(f"Columns {invalid}", list(self._data.columns))
             return DataFrame(self._data[key])
         else:
             return DataFrame(self._data[key])
@@ -160,7 +155,9 @@ class DataFrame:
     def __setitem__(self, key: str, value: Any) -> None:
         """Column assignment with validation."""
         if not isinstance(key, str):
-            raise PipeFrameTypeError("Column name must be string", expected_type=str, got_type=type(key))
+            raise PipeFrameTypeError(
+                "Column name must be string", expected_type=str, got_type=type(key)
+            )
         self._data[key] = value
 
     def __len__(self) -> int:
@@ -571,9 +568,7 @@ class DataFrame:
             )
             return None
         return DataFrame(
-            self._data.fillna(
-                value=value, method=method, axis=axis, limit=limit, downcast=downcast
-            )
+            self._data.fillna(value=value, method=method, axis=axis, limit=limit, downcast=downcast)
         )
 
     def interpolate(
@@ -615,7 +610,11 @@ class DataFrame:
     # ======================================================================
 
     def sum(
-        self, axis: Optional[int] = None, skipna: bool = True, numeric_only: bool = False, **kwargs: Any
+        self,
+        axis: Optional[int] = None,
+        skipna: bool = True,
+        numeric_only: bool = False,
+        **kwargs: Any,
     ) -> Union[Series, Any]:
         """Return sum of values."""
         result = self._data.sum(axis=axis, skipna=skipna, numeric_only=numeric_only, **kwargs)
@@ -624,7 +623,11 @@ class DataFrame:
         return result
 
     def mean(
-        self, axis: Optional[int] = None, skipna: bool = True, numeric_only: bool = False, **kwargs: Any
+        self,
+        axis: Optional[int] = None,
+        skipna: bool = True,
+        numeric_only: bool = False,
+        **kwargs: Any,
     ) -> Union[Series, Any]:
         """Return mean of values."""
         result = self._data.mean(axis=axis, skipna=skipna, numeric_only=numeric_only, **kwargs)
@@ -633,7 +636,11 @@ class DataFrame:
         return result
 
     def median(
-        self, axis: Optional[int] = None, skipna: bool = True, numeric_only: bool = False, **kwargs: Any
+        self,
+        axis: Optional[int] = None,
+        skipna: bool = True,
+        numeric_only: bool = False,
+        **kwargs: Any,
     ) -> Union[Series, Any]:
         """Return median of values."""
         result = self._data.median(axis=axis, skipna=skipna, numeric_only=numeric_only, **kwargs)
@@ -642,7 +649,11 @@ class DataFrame:
         return result
 
     def min(
-        self, axis: Optional[int] = None, skipna: bool = True, numeric_only: bool = False, **kwargs: Any
+        self,
+        axis: Optional[int] = None,
+        skipna: bool = True,
+        numeric_only: bool = False,
+        **kwargs: Any,
     ) -> Union[Series, Any]:
         """Return minimum value."""
         result = self._data.min(axis=axis, skipna=skipna, numeric_only=numeric_only, **kwargs)
@@ -651,7 +662,11 @@ class DataFrame:
         return result
 
     def max(
-        self, axis: Optional[int] = None, skipna: bool = True, numeric_only: bool = False, **kwargs: Any
+        self,
+        axis: Optional[int] = None,
+        skipna: bool = True,
+        numeric_only: bool = False,
+        **kwargs: Any,
     ) -> Union[Series, Any]:
         """Return maximum value."""
         result = self._data.max(axis=axis, skipna=skipna, numeric_only=numeric_only, **kwargs)
@@ -709,7 +724,9 @@ class DataFrame:
         interpolation: str = "linear",
     ) -> Union["DataFrame", Series]:
         """Return values at the given quantile."""
-        result = self._data.quantile(q=q, axis=axis, numeric_only=numeric_only, interpolation=interpolation)
+        result = self._data.quantile(
+            q=q, axis=axis, numeric_only=numeric_only, interpolation=interpolation
+        )
         if isinstance(result, pd.DataFrame):
             return DataFrame(result)
         return Series(result)
@@ -949,9 +966,7 @@ class DataFrame:
     # Duplicate Handling
     # ======================================================================
 
-    def duplicated(
-        self, subset: Optional[List[str]] = None, keep: str = "first"
-    ) -> Series:
+    def duplicated(self, subset: Optional[List[str]] = None, keep: str = "first") -> Series:
         """Return boolean Series denoting duplicate rows."""
         if subset:
             invalid = [col for col in subset if col not in self._data.columns]
@@ -1024,7 +1039,9 @@ class DataFrame:
             return DataFrame(result)
         return Series(result)
 
-    def applymap(self, func: Callable, na_action: Optional[str] = None, **kwargs: Any) -> "DataFrame":
+    def applymap(
+        self, func: Callable, na_action: Optional[str] = None, **kwargs: Any
+    ) -> "DataFrame":
         """
         Apply a function elementwise.
 

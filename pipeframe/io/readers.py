@@ -238,8 +238,7 @@ def read_excel(
 
     except ImportError as e:
         raise PipeFrameIOError(
-            "Excel support requires openpyxl or xlrd. "
-            "Install with: pip install pipeframe[excel]"
+            "Excel support requires openpyxl or xlrd. " "Install with: pip install pipeframe[excel]"
         ) from e
     except Exception as e:
         raise PipeFrameIOError(f"Failed to read Excel file: {str(e)}") from e
@@ -839,9 +838,7 @@ def to_csv(
     return df.to_csv(path_or_buf, sep=sep, **kwargs)
 
 
-def to_excel(
-    df: DataFrame, excel_writer: Any, sheet_name: str = "Sheet1", **kwargs: Any
-) -> None:
+def to_excel(df: DataFrame, excel_writer: Any, sheet_name: str = "Sheet1", **kwargs: Any) -> None:
     """
     Write DataFrame to Excel file.
 
