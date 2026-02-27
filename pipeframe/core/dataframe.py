@@ -112,18 +112,17 @@ class DataFrame:
         except Exception as e:
             raise RuntimeError(f"Pipe operation failed: {str(e)}") from e
 
-        # Ensure we return a DataFrame or GroupBy
+        # Ensure we return a DataFrame or GroupBy if possible, but allow other
+        # types for terminal verbs (like shape, count, etc.)
         if isinstance(result, DataFrame):
             return result
         elif isinstance(result, pd.DataFrame):
             return DataFrame(result)
-        else:
-            # Check if it's a GroupBy object (avoid circular import)
-            if type(result).__name__ == 'GroupBy':
-                return result
-            raise PipeFrameTypeError(
-                f"Pipe function must return DataFrame or GroupBy, got {type(result).__name__}"
-            )
+        elif type(result).__name__ == 'GroupBy':
+            return result
+        
+        # Fallback for terminal verbs or other types
+        return result
 
     def __getitem__(self, key: Union[str, List[str], slice]) -> Union["DataFrame", Series]:
         """

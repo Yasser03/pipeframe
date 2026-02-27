@@ -474,6 +474,76 @@ def slice_rows(
     return DataFrame(result)
 
 
+def head(n: int = 5) -> Callable:
+    """
+    Select first n rows - curry-friendly wrapper for pipe operator.
+    
+    Parameters
+    ----------
+    n : int, default 5
+        Number of rows to select
+    
+    Returns
+    -------
+    Callable
+        Function that takes a DataFrame and returns its first n rows
+    """
+    return lambda df: df.head(n)
+
+
+def tail(n: int = 5) -> Callable:
+    """
+    Select last n rows - curry-friendly wrapper for pipe operator.
+    
+    Parameters
+    ----------
+    n : int, default 5
+        Number of rows to select
+    
+    Returns
+    -------
+    Callable
+        Function that takes a DataFrame and returns its last n rows
+    """
+    return lambda df: df.tail(n)
+
+
+def shape() -> Callable:
+    """
+    Get DataFrame shape - curry-friendly wrapper for pipe operator.
+    
+    Returns
+    -------
+    Callable
+        Function that takes a DataFrame and returns its shape (rows, cols)
+    """
+    return lambda df: df.shape
+
+
+def info(**kwargs: Any) -> Callable:
+    """
+    Display summary information - curry-friendly wrapper for pipe operator.
+    
+    Returns
+    -------
+    Callable
+        Function that takes a DataFrame and calls its info() method
+    """
+    return lambda df: df.info(**kwargs)
+
+
+def describe(**kwargs: Any) -> Callable:
+    """
+    Generate descriptive statistics - curry-friendly wrapper for pipe operator.
+    
+    Returns
+    -------
+    Callable
+        Function that takes a DataFrame and calls its describe() method
+    """
+    return lambda df: df.describe(**kwargs)
+
+
 def _distinct_impl(df: Union[DataFrame, pd.DataFrame], *columns: str, **kwargs: Any) -> DataFrame:
     """
     Select distinct/unique rows.
